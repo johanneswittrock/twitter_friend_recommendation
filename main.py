@@ -230,39 +230,3 @@ f.close
 mft()
 
 
-
-
-#tweets_no_urls = [remove_url(tweet.text) for tweet in tweets]
-
-#sentiment_objects = [TextBlob(tweet) for tweet in tweets_no_urls]
-
-#sentiment_objects[0].polarity, sentiment_objects[0]
-
-# Create list of polarity valuesx and tweet text
-#sentiment_values = [[tweet.sentiment.polarity, str(tweet)] for tweet in sentiment_objects]
-
-#sentiment_values[0]
-
-# Create dataframe containing the polarity value and tweet text
-#sentiment_df = pd.DataFrame(sentiment_values, columns=["polarity", "tweet"])
-
-#sentiment_df.head()
-
-
-
-
-#fig, ax = plt.subplots(figsize=(8, 6))
-
-# Plot histogram of the polarity values
-#sentiment_df.hist(bins=[-1, -0.75, -0.5, -0.25, 0.25, 0.5, 0.75, 1],
-#            ax=ax,
-#             color="purple")
-
-#plt.title("Sentiments from Tweets on Climate Change")
-#plt.show()
-
-
-#am besten wäre es iwie in ein format zu bekommen wie:
-#user - tweet - sentiment
-#mby nur user und sentiment weil text eig egal ist wenn ich sentiment hab
-#topic ist auch wichtig
