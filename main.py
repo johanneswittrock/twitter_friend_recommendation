@@ -60,7 +60,7 @@ def preprocessClimateTweets(tweets):
         text = remove_url(tweet.text)
         sentiment_object = TextBlob(text)
         sentiment_value_temp = sentiment_object.sentiment.polarity
-        sentiment_value = (((sentiment_value_temp - (-1)) * 5) / 2) 
+        sentiment_value = (((sentiment_value_temp - (-1)) * 4) / 2) + 1
 
         if user in users:
             i = users[user]
@@ -79,7 +79,7 @@ def preprocessMovieTweets(tweets):
         text = remove_url(tweet.text)
         sentiment_object = TextBlob(text)
         sentiment_value_temp = sentiment_object.sentiment.polarity
-        sentiment_value = (((sentiment_value_temp - (-1)) * 5) / 2) 
+        sentiment_value = (((sentiment_value_temp - (-1)) * 4) / 2) + 1
 
 
         if user in users:
@@ -99,7 +99,7 @@ def preprocessFootballTweets(tweets):
         text = remove_url(tweet.text)
         sentiment_object = TextBlob(text)
         sentiment_value_temp = sentiment_object.sentiment.polarity
-        sentiment_value = (((sentiment_value_temp - (-1)) * 5) / 2)
+        sentiment_value = (((sentiment_value_temp - (-1)) * 4) / 2) + 1
 
         if user in users:
             i = users[user]
@@ -118,7 +118,7 @@ def preprocessTrumpTweets(tweets):
         text = remove_url(tweet.text)
         sentiment_object = TextBlob(text)
         sentiment_value_temp = sentiment_object.sentiment.polarity
-        sentiment_value = (((sentiment_value_temp - (-1)) * 5) / 2)
+        sentiment_value = (((sentiment_value_temp - (-1)) * 4) / 2) + 1
 
         if user in users:
             i = users[user]
@@ -137,8 +137,7 @@ def preprocessCarTweets(tweets):
         text = remove_url(tweet.text)
         sentiment_object = TextBlob(text)
         sentiment_value_temp = sentiment_object.sentiment.polarity
-        #change range of the sentimant value from -1-1 to 0-5
-        sentiment_value = (((sentiment_value_temp - (-1)) * 5) / 2)
+        sentiment_value = (((sentiment_value_temp - (-1)) * 4) / 2) + 1
 
         if user in users:
             i = users[user]
@@ -196,27 +195,27 @@ date_since = "2021-05-01"
 climateTweets = tw.Cursor(api.search,
               q=climatechange,
               lang="en",
-              since=date_since).items(3)
+              since=date_since).items(50)
 
 movieTweets = tw.Cursor(api.search,
               q=movies,
               lang="en",
-              since=date_since).items(3)
+              since=date_since).items(50)
     
 footballTweets = tw.Cursor(api.search,
               q=football,
               lang="en",
-              since=date_since).items(3)
+              since=date_since).items(50)
 
 trumpTweets = tw.Cursor(api.search,
               q=trump,
               lang="en",
-              since=date_since).items(3)
+              since=date_since).items(50)
 
 carTweets = tw.Cursor(api.search,
               q=cars,
               lang="en",
-              since=date_since).items(3)
+              since=date_since).items(50)
 
 preprocessClimateTweets(climateTweets)
 preprocessMovieTweets(movieTweets)
