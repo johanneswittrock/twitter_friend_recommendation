@@ -1,25 +1,16 @@
-import os
-from numpy.core.defchararray import array
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-
 import tweepy as tw
-from nltk.corpus import stopwords
 import re
 from textblob import TextBlob
 import numpy
-import sys
 import matrixfactorization as mf
 import json
-import warnings
-warnings.filterwarnings("ignore")
-
-sns.set(font_scale=1.5)
-sns.set_style("whitegrid")
+from sklearn.metrics.pairwise import cosine_similarity
+import sys
+import pandas as pd
 
 numpy.set_printoptions(threshold=sys.maxsize)
+
+
 
 def remove_url(txt):
     """Replace URLs found in a text string with nothing 
@@ -37,13 +28,6 @@ def remove_url(txt):
 
     return " ".join(re.sub("([^0-9A-Za-z \t])|(\w+:\/\/\S+)", "", txt).split())
 
-j_values = {
-    "climate change": 0,
-    "movies": 1,
-    "football": 2,
-    "trump": 3,
-    "cars": 4
-}
 
 matrix = []
 users = {} 
@@ -148,9 +132,7 @@ def preprocessCarTweets(tweets):
             matrix.append([0,0,0,0,sentiment_value])
 
 
-def mft():
-    global np_array
-    R = np_array
+def mft(R):
     # N: num of User
     N = len(R)
     # M: num of Movie
@@ -167,9 +149,8 @@ def mft():
     nP, nQ = mf.matrix_factorization(R, P, Q, K)
 
     nR = numpy.dot(nP, nQ.T)
-    f = open("matrix.txt", "w")
-    f.write(numpy.array2string(nR))
-    f.close
+    return nR
+
 
 
 f = open("keys.json")
@@ -195,27 +176,27 @@ date_since = "2021-05-01"
 climateTweets = tw.Cursor(api.search,
               q=climatechange,
               lang="en",
-              since=date_since).items(50)
+              since=date_since).items(20)
 
 movieTweets = tw.Cursor(api.search,
               q=movies,
               lang="en",
-              since=date_since).items(50)
+              since=date_since).items(20)
     
 footballTweets = tw.Cursor(api.search,
               q=football,
               lang="en",
-              since=date_since).items(50)
+              since=date_since).items(20)
 
 trumpTweets = tw.Cursor(api.search,
               q=trump,
               lang="en",
-              since=date_since).items(50)
+              since=date_since).items(20)
 
 carTweets = tw.Cursor(api.search,
               q=cars,
               lang="en",
-              since=date_since).items(50)
+              since=date_since).items(20)
 
 preprocessClimateTweets(climateTweets)
 preprocessMovieTweets(movieTweets)
@@ -224,9 +205,25 @@ preprocessTrumpTweets(trumpTweets)
 preprocessCarTweets(carTweets)
 
 np_array = numpy.array(matrix)
+
+#test = [[5,3,0,2,1],
+#[2,0,3,0,5],
+#[1,4,5,2,0],
+#[0,5,3,2,5],
+#[5,3,0,0,1]]
+#np_array= numpy.array(test)
+
 f = open("oldmatrix.txt", "w")
 f.write(numpy.array2string(np_array))
 f.close
-mft()
 
+rating_matrix = mft(np_array)
+f = open("matrix.txt", "w")
+f.write(numpy.array2string(rating_matrix))
+f.close
 
+df = pd.DataFrame(rating_matrix)
+cos_sim = cosine_similarity(df,df)
+f = open("cosinesimilarity.txt", "w")
+f.write(numpy.array2string(cos_sim))
+f.close
